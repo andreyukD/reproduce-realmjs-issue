@@ -10,31 +10,42 @@ type TaskItemProps = {
   task: Task & Realm.Object;
   onToggleStatus: () => void;
   onDelete: () => void;
+  onAddSubItems: () => void;
 };
 
 export const TaskItem = React.memo<TaskItemProps>(
-  ({task, onToggleStatus, onDelete}) => {
+  ({task, onToggleStatus, onDelete, onAddSubItems}) => {
     return (
-      <View style={styles.task}>
-        <Pressable
-          onPress={onToggleStatus}
-          style={[styles.status, task.isComplete && styles.completed]}>
-          <Text style={styles.icon}>{task.isComplete ? '✓' : '○'}</Text>
-        </Pressable>
-        <View style={styles.descriptionContainer}>
-          <Text numberOfLines={1} style={styles.description}>
-            {task.description}
-          </Text>
+      <>
+        <View style={styles.task}>
+          <Pressable
+            onPress={onToggleStatus}
+            style={[styles.status, task.isComplete && styles.completed]}>
+            <Text style={styles.icon}>{task.isComplete ? '✓' : '○'}</Text>
+          </Pressable>
+          <View style={styles.descriptionContainer}>
+            <Text numberOfLines={1} style={styles.description}>
+              {task.description}
+            </Text>
+          </View>
+          <Pressable onPress={onDelete} style={styles.deleteButton}>
+            <Text style={styles.deleteText}>Delete</Text>
+          </Pressable>
         </View>
-        <Pressable onPress={onDelete} style={styles.deleteButton}>
-          <Text style={styles.deleteText}>Delete</Text>
-        </Pressable>
-      </View>
+        <View>
+          <Pressable onPress={onAddSubItems}>
+            <Text style={styles.edit}>Edit first item</Text>
+          </Pressable>
+          <Text style={styles.subItems}>SubItems: {JSON.stringify(task.items)}</Text>
+        </View>
+      </>
     );
   },
 );
 
 const styles = StyleSheet.create({
+  edit: {color: 'yellow'},
+  subItems: {color: 'white'},
   task: {
     height: 50,
     alignSelf: 'stretch',

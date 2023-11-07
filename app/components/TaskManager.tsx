@@ -1,5 +1,6 @@
 import React, {useCallback} from 'react';
-import {View, StyleSheet, Switch, Text} from 'react-native';
+import {View, StyleSheet, Switch, Text, Button} from 'react-native';
+import Realm from "realm";
 
 import {Task} from '../models/Task';
 import {IntroText} from './IntroText';
@@ -32,8 +33,10 @@ export const TaskManager: React.FC<{
       // no changes propagate and the transaction needs to start over when connectivity allows.
       realm.write(() => {
         return realm.create(Task, {
+          _id: new Realm.BSON.ObjectId(),
           description,
           userId: userId ?? 'SYNC_DISABLED',
+          items: [{name: 'First item'}]
         });
       });
     },
@@ -64,6 +67,13 @@ export const TaskManager: React.FC<{
     [realm],
   );
 
+  const handleAddSubItems = useCallback((task: Task & Realm.Object): void => {
+      realm.write(() => {
+          // different behaviour on Realm 12, it pushes new item instead of updating one
+          task.items[0] = {name: 'First item changed'}
+      });
+  }, [realm])
+
   const handleDeleteTask = useCallback(
     (task: Task & Realm.Object): void => {
       realm.write(() => {
@@ -79,15 +89,19 @@ export const TaskManager: React.FC<{
   return (
     <>
       <View style={styles.content}>
+        <Text style={styles.realm}>Realm 12.0.0</Text>
         <AddTaskForm onSubmit={handleAddTask} />
         {tasks.length === 0 ? (
           <IntroText />
         ) : (
-          <TaskList
-            tasks={tasks}
-            onToggleTaskStatus={handleToggleTaskStatus}
-            onDeleteTask={handleDeleteTask}
-          />
+            <>
+                <TaskList
+                    tasks={tasks}
+                    onToggleTaskStatus={handleToggleTaskStatus}
+                    onDeleteTask={handleDeleteTask}
+                    onAddSubItems={handleAddSubItems}
+                />
+            </>
         )}
       </View>
       <View style={styles.switchPanel}>
@@ -99,6 +113,7 @@ export const TaskManager: React.FC<{
 };
 
 const styles = StyleSheet.create({
+  realm: {color: 'yellow'},
   content: {
     flex: 1,
     paddingTop: 20,
