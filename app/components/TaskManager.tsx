@@ -94,7 +94,7 @@ export const TaskManager: React.FC<{
   return (
     <>
       <View style={styles.content}>
-        <Text style={styles.realm}>Realm 12.3.1</Text>
+        <Text style={styles.realm}>Realm 11.9.0</Text>
         <AddTaskForm onSubmit={handleAddTask} />
         {tasks.length === 0 ? (
           <IntroText />
