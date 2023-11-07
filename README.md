@@ -1,3 +1,7 @@
+https://github.com/andreyukD/reproduce-realmjs-issue/assets/33383393/aefc217d-c696-4d90-8db7-721999dd6170
+
+https://github.com/andreyukD/reproduce-realmjs-issue/assets/33383393/db2843a5-12af-4a0c-bb28-ccce5aac851f
+
 # Expo Template Realm TypeScript
 <p>
   <!-- iOS -->
