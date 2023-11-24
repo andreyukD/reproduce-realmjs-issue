@@ -69,8 +69,13 @@ export const TaskManager: React.FC<{
 
   const handleAddSubItems = useCallback((task: Task & Realm.Object): void => {
       realm.write(() => {
-          // different behaviour on Realm 12, it pushes new item instead of updating one
-          task.items[0] = {name: 'First item changed'}
+          // different behaviour on Realm 12, it doesn't allow setting null for embedded schema field,
+          // but it can be null on init app
+          const firstItem = task.items[0]
+          firstItem['address'] = !firstItem.address ? {
+              city: 'Warsaw',
+              country: 'PL'
+          } : null
       });
   }, [realm])
 

@@ -51,7 +51,19 @@ export class ItemSchema extends Realm.Object {
     name: 'ItemSchema',
     embedded: true,
     properties: {
-      name: 'string'
+      name: 'string',
+      address: 'AddressSchema'
+    },
+  };
+}
+
+export class AddressSchema extends Realm.Object {
+  static schema: Realm.ObjectSchema = {
+    name: 'AddressSchema',
+    embedded: true,
+    properties: {
+      city: 'string',
+      country: 'string'
     },
   };
 }

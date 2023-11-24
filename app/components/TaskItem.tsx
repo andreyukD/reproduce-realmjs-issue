@@ -1,6 +1,6 @@
 import React from 'react';
 import Realm from 'realm';
-import {View, Text, Pressable, StyleSheet} from 'react-native';
+import {View, Text, Pressable, StyleSheet, TouchableOpacity} from 'react-native';
 
 import {shadows} from '../styles/shadows';
 import colors from '../styles/colors';
@@ -33,9 +33,9 @@ export const TaskItem = React.memo<TaskItemProps>(
           </Pressable>
         </View>
         <View>
-          <Pressable onPress={onAddSubItems}>
-            <Text style={styles.edit}>Edit first item</Text>
-          </Pressable>
+          <TouchableOpacity onPress={onAddSubItems}>
+            <Text style={styles.edit}>{`Toggle address (object <-> null)`}</Text>
+          </TouchableOpacity>
           <Text style={styles.subItems}>SubItems: {JSON.stringify(task.items)}</Text>
         </View>
       </>
